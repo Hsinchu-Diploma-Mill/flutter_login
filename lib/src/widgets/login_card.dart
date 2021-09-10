@@ -37,10 +37,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   final _passwordFocusNode = FocusNode();
   final _confirmPasswordFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
 
   TextEditingController? _nameController;
   TextEditingController? _passController;
   TextEditingController? _confirmPassController;
+  TextEditingController? _emailController;
 
   var _isLoading = false;
   var _isSubmitting = false;
@@ -126,6 +128,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _loadingController.removeStatusListener(handleLoadingAnimationStatus);
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
+    _emailFocusNode.dispose();
 
     _switchAuthController.dispose();
     _postSwitchAuthController.dispose();
@@ -175,6 +178,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       error = await auth.onSignup!(LoginData(
         name: auth.email,
         password: auth.password,
+        email: auth.email_addr,
       ));
     }
 
@@ -310,6 +314,31 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             }
           : (value) => null,
       onSaved: (value) => auth.confirmPassword = value!,
+    );
+  }
+
+  Widget _buildEmailField(double width, LoginMessages messages, Auth auth) {
+    return AnimatedTextFormField(
+      width: width,
+      enabled: auth.isSignup,
+      loadingController: _loadingController,
+      inertiaController: _postSwitchAuthController,
+      inertiaDirection: TextFieldInertiaDirection.right,
+      labelText: messages.emailHint,
+      controller: _emailController,
+      prefixIcon: Icon(Icons.email),
+      textInputAction: TextInputAction.done,
+      focusNode: _emailFocusNode,
+      onFieldSubmitted: (value) => _submit(),
+      validator: auth.isSignup
+          ? (value) {
+              if (value!.isEmpty || !Regex.email.hasMatch(value)) {
+                return messages.emailError;
+              }
+              return null;
+            }
+          : (value) => null,
+      onSaved: (value) => auth.email_addr = value!,
     );
   }
 
@@ -466,6 +495,42 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
             child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildEmailField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: messages.signUpMessage.isNotEmpty
+                ? Text(messages.signUpMessage)
+                : SizedBox.fromSize(
+                    size: Size.fromHeight(8),
+                  ),
           ),
           Container(
             padding: Paddings.fromRBL(cardPadding),

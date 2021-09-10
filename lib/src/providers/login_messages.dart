@@ -5,6 +5,8 @@ class LoginMessages with ChangeNotifier {
       {this.userHint = defaultUserHint,
       this.passwordHint = defaultPasswordHint,
       this.confirmPasswordHint = defaultConfirmPasswordHint,
+      this.emailHint = defaultemailHint,
+      this.emailError = defaultemailError,
       this.forgotPasswordButton = defaultForgotPasswordButton,
       this.loginButton = defaultLoginButton,
       this.signupButton = defaultSignupButton,
@@ -17,11 +19,14 @@ class LoginMessages with ChangeNotifier {
       this.flushbarTitleError = defaultflushbarTitleError,
       this.flushbarTitleSuccess = defaultflushbarTitleSuccess,
       this.signUpSuccess = defaultSignUpSuccess,
+      this.signUpMessage = defaultSignUpMessage,
       this.providersTitle = defaultProvidersTitle});
 
   static const defaultUserHint = 'Email';
   static const defaultPasswordHint = 'Password';
   static const defaultConfirmPasswordHint = 'Confirm Password';
+  static const defaultemailHint = 'E-mail';
+  static const defaultemailError = 'Invalid E-mail';
   static const defaultForgotPasswordButton = 'Forgot Password?';
   static const defaultLoginButton = 'LOGIN';
   static const defaultSignupButton = 'SIGNUP';
@@ -35,6 +40,7 @@ class LoginMessages with ChangeNotifier {
   static const defaultflushbarTitleSuccess = 'Success';
   static const defaultflushbarTitleError = 'Error';
   static const defaultSignUpSuccess = 'An activation link has been sent';
+  static const defaultSignUpMessage = '';
   static const defaultProvidersTitle = 'or login with';
 
   /// Hint text of the userHint [TextField]
@@ -46,6 +52,12 @@ class LoginMessages with ChangeNotifier {
 
   /// Hint text of the confirm password [TextField]
   final String confirmPasswordHint;
+
+  /// Hint text of the email [TextField]
+  final String emailHint;
+
+  /// Error text for invalid email
+  final String emailError;
 
   /// Forgot password button's label
   final String forgotPasswordButton;
@@ -84,6 +96,9 @@ class LoginMessages with ChangeNotifier {
 
   /// The success message to show after signing up
   final String signUpSuccess;
+
+  /// The message shown during sign up
+  final String signUpMessage;
 
   /// The string shown above the Providers buttons
   final String providersTitle;
