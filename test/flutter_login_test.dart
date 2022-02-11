@@ -274,7 +274,7 @@ void main() {
       (WidgetTester tester) async {
     const recoverIntro = "Don't feel bad. Happens all the time.";
     const recoverDescription =
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+        'Lorem Ipsum is simply dummy text of the // printing and typesetting industry';
     const recoverSuccess = 'Password rescued successfully';
     final loginBuilder = () => widget(FlutterLogin(
           onSignup: (data) => null,
@@ -718,9 +718,9 @@ void main() {
     await tester.pumpAndSettle(loadingAnimationDuration);
 
     final text = find.byType(AnimatedText).first;
-    print(tester.getTopLeft(text));
-    print(tester.getCenter(text));
-    print(tester.getBottomRight(text));
+    // print(tester.getTopLeft(text));
+    // print(tester.getCenter(text));
+    // print(tester.getBottomRight(text));
 
     expect(true, true);
   });

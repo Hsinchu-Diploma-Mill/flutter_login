@@ -46,9 +46,9 @@ class LoginScreen extends StatelessWidget {
           icon: FontAwesomeIcons.google,
           label: 'Google',
           callback: () async {
-            print('start google sign in');
+            // print('start google sign in');
             await Future.delayed(loginTime);
-            print('stop google sign in');
+            // print('stop google sign in');
             return '';
           },
         ),
@@ -56,18 +56,18 @@ class LoginScreen extends StatelessWidget {
           icon: FontAwesomeIcons.linkedinIn,
           label: 'LinkedIn',
           callback: () async {
-            print('start linkdin sign in');
+            // print('start linkdin sign in');
             await Future.delayed(loginTime);
-            print('stop linkdin sign in');
+            // print('stop linkdin sign in');
             return '';
           },
         ),
         LoginProvider(
           icon: FontAwesomeIcons.githubAlt,
           callback: () async {
-            print('start github sign in');
+            // print('start github sign in');
             await Future.delayed(loginTime);
-            print('stop github sign in');
+            // print('stop github sign in');
             return '';
           },
         ),
@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
       //   goBackButton: 'GO BACK',
       //   confirmPasswordError: 'Not match!',
       //   recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
-      //   recoverPasswordDescription: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+      //   recoverPasswordDescription: 'Lorem Ipsum is simply dummy text of the // printing and typesetting industry',
       //   recoverPasswordSuccess: 'Password rescued successfully',
       //   flushbarTitleError: 'Oh no!',
       //   flushbarTitleSuccess: 'Succes!',
@@ -184,15 +184,15 @@ class LoginScreen extends StatelessWidget {
         return null;
       },
       onLogin: (loginData) {
-        print('Login info');
-        print('Name: ${loginData.name}');
-        print('Password: ${loginData.password}');
+        // print('Login info');
+        // print('Name: ${loginData.name}');
+        // print('Password: ${loginData.password}');
         return _loginUser(loginData);
       },
       onSignup: (loginData) {
-        print('Signup info');
-        print('Name: ${loginData.name}');
-        print('Password: ${loginData.password}');
+        // print('Signup info');
+        // print('Name: ${loginData.name}');
+        // print('Password: ${loginData.password}');
         return _loginUser(loginData);
       },
       onSubmitAnimationCompleted: () {
@@ -201,8 +201,8 @@ class LoginScreen extends StatelessWidget {
         ));
       },
       onRecoverPassword: (name) {
-        print('Recover password info');
-        print('Name: $name');
+        // print('Recover password info');
+        // print('Name: $name');
         return _recoverPassword(name);
         // Show new password dialog
       },
