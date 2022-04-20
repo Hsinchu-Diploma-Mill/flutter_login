@@ -341,8 +341,6 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
               : index == 1
                   ? _isRecovery
                       ? _RecoverCard(
-                          userValidator: widget.userValidator,
-                          userType: widget.userType,
                           loginTheme: widget.loginTheme,
                           navigateBack: widget.navigateBackAfterRecovery,
                           onSwitchLogin: () => _switchRecovery(false),

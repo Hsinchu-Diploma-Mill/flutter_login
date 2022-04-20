@@ -3,16 +3,12 @@ part of auth_card;
 class _RecoverCard extends StatefulWidget {
   _RecoverCard(
       {Key? key,
-      required this.userValidator,
       required this.onSwitchLogin,
-      required this.userType,
       this.loginTheme,
       required this.navigateBack})
       : super(key: key);
 
-  final FormFieldValidator<String>? userValidator;
   final Function onSwitchLogin;
-  final LoginUserType userType;
   final LoginTheme? loginTheme;
   final bool navigateBack;
 
@@ -35,7 +31,7 @@ class _RecoverCardState extends State<_RecoverCard>
     super.initState();
 
     final auth = Provider.of<Auth>(context, listen: false);
-    _nameController = TextEditingController(text: auth.email);
+    _nameController = TextEditingController(text: auth.email_addr);
 
     _submitController = AnimationController(
       vsync: this,
@@ -59,7 +55,7 @@ class _RecoverCardState extends State<_RecoverCard>
     _formRecoverKey.currentState!.save();
     await _submitController!.forward();
     setState(() => _isSubmitting = true);
-    final error = await auth.onRecoverPassword!(auth.email);
+    final error = await auth.onRecoverPassword!(auth.email_addr);
 
     if (error != null) {
       showErrorToast(context, messages.flushbarTitleError, error);
@@ -81,14 +77,19 @@ class _RecoverCardState extends State<_RecoverCard>
     return AnimatedTextFormField(
       controller: _nameController,
       width: width,
-      labelText: messages.userHint,
-      prefixIcon: Icon(FontAwesomeIcons.solidUserCircle),
-      keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
-      autofillHints: [TextFieldUtils.getAutofillHints(widget.userType)],
+      labelText: messages.emailHint,
+      prefixIcon: Icon(Icons.email),
+      keyboardType: TextFieldUtils.getKeyboardType(LoginUserType.email),
+      autofillHints: [TextFieldUtils.getAutofillHints(LoginUserType.email)],
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
-      validator: widget.userValidator,
-      onSaved: (value) => auth.email = value!,
+      validator: (value) {
+        if (value!.isEmpty || !Regex.email.hasMatch(value)) {
+          return messages.emailError;
+        }
+        return null;
+      },
+      onSaved: (value) => auth.email_addr = value!,
     );
   }
 
