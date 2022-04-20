@@ -8,6 +8,7 @@ class _LoginCard extends StatefulWidget {
       required this.passwordValidator,
       required this.onSwitchRecoveryPassword,
       required this.userType,
+      required this.onRegisterNotice,
       this.onSwitchAuth,
       this.onSubmitCompleted,
       this.hideForgotPasswordButton = false,
@@ -21,6 +22,7 @@ class _LoginCard extends StatefulWidget {
   final FormFieldValidator<String>? passwordValidator;
   final Function onSwitchRecoveryPassword;
   final Function? onSwitchAuth;
+  final Function onRegisterNotice;
   final Function? onSubmitCompleted;
   final bool hideForgotPasswordButton;
   final bool hideSignUpButton;
@@ -142,6 +144,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   void _switchAuthMode() {
     final auth = Provider.of<Auth>(context, listen: false);
+
+    // Register notice
+    if (auth.mode == AuthMode.Login) {
+      widget.onRegisterNotice();
+    }
+
     final newAuthMode = auth.switchAuth();
 
     if (newAuthMode == AuthMode.Signup) {

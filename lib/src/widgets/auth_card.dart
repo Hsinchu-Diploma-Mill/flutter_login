@@ -29,6 +29,7 @@ import 'fade_in.dart';
 
 part 'login_card.dart';
 part 'recover_card.dart';
+part 'register_notice_card.dart';
 
 class AuthCard extends StatefulWidget {
   AuthCard(
@@ -74,6 +75,8 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   var _isLoadingFirstTime = true;
   var _pageIndex = 0;
   static const cardSizeScaleEnd = .2;
+
+  var _isRecovery = false;
 
   TransformerPageController? _pageController;
   late AnimationController _formLoadingController;
@@ -165,12 +168,14 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         curve: Curves.ease,
       );
       _pageIndex = 1;
+      _isRecovery = true;
     } else {
       _pageController!.previousPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.ease,
       );
       _pageIndex = 0;
+      _isRecovery = false;
     }
   }
 
@@ -304,7 +309,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             ? null
             : CustomPageTransformer(),
         itemBuilder: (BuildContext context, int index) {
-          final child = (index == 0)
+          final child = index == 0
               ? _buildLoadingAnimator(
                   theme: theme,
                   child: _LoginCard(
@@ -316,6 +321,12 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                     userValidator: widget.userValidator,
                     passwordValidator: widget.passwordValidator,
                     onSwitchRecoveryPassword: () => _switchRecovery(true),
+                    onRegisterNotice: () {
+                      _pageController!.nextPage(
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                      );
+                    },
                     onSubmitCompleted: () {
                       _forwardChangeRouteAnimation().then((_) {
                         widget.onSubmitCompleted!();
@@ -327,13 +338,39 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                     hideProvidersTitle: widget.hideProvidersTitle,
                   ),
                 )
-              : _RecoverCard(
-                  userValidator: widget.userValidator,
-                  userType: widget.userType,
-                  loginTheme: widget.loginTheme,
-                  navigateBack: widget.navigateBackAfterRecovery,
-                  onSwitchLogin: () => _switchRecovery(false),
-                );
+              : index == 1
+                  ? _isRecovery
+                      ? _RecoverCard(
+                          userValidator: widget.userValidator,
+                          userType: widget.userType,
+                          loginTheme: widget.loginTheme,
+                          navigateBack: widget.navigateBackAfterRecovery,
+                          onSwitchLogin: () => _switchRecovery(false),
+                        )
+                      : _RegisterNoticeCard(
+                          title: '請問您是否同意：',
+                          message:
+                              '註冊後本帳號所上傳之生態資訊 (包含圖片、時間、地點等)，將依照創用CC授權條款，授權予公眾使用。',
+                          onAccept: () {
+                            _pageController!.nextPage(
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
+                          },
+                        )
+                  : _RegisterNoticeCard(
+                      title: '姓名標示-非商業性-相同方式分享',
+                      message:
+                          '本授權條款允許使用者重製、散布、傳輸以及修改著作，但不得為商業目的之使用。若使用者修改該著作時，必須按照授權者所指定的方式來散布該衍生作品，並且將產出之新創著作採用相同的授權條款釋出。',
+                      onAccept: () {
+                        _pageController!.animateToPage(
+                          0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      },
+                      imageAsset: 'images/cc_notice.png',
+                    );
 
           return Align(
             alignment: Alignment.topCenter,

@@ -20,7 +20,8 @@ class LoginMessages with ChangeNotifier {
       this.flushbarTitleSuccess = defaultflushbarTitleSuccess,
       this.signUpSuccess = defaultSignUpSuccess,
       this.signUpMessage = defaultSignUpMessage,
-      this.providersTitle = defaultProvidersTitle});
+      this.providersTitle = defaultProvidersTitle,
+      this.acceptButtonText = defaultAcceptButtonText});
 
   static const defaultUserHint = 'Email';
   static const defaultPasswordHint = 'Password';
@@ -42,6 +43,7 @@ class LoginMessages with ChangeNotifier {
   static const defaultSignUpSuccess = 'An activation link has been sent';
   static const defaultSignUpMessage = '';
   static const defaultProvidersTitle = 'or login with';
+  static const defaultAcceptButtonText = 'Accept';
 
   /// Hint text of the userHint [TextField]
   /// By default is Email
@@ -102,4 +104,7 @@ class LoginMessages with ChangeNotifier {
 
   /// The string shown above the Providers buttons
   final String providersTitle;
+
+  /// The string shown on the button Accept of the register notice card
+  final String acceptButtonText;
 }
