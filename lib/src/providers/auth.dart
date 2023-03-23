@@ -24,10 +24,12 @@ class Auth with ChangeNotifier {
     String email_addr = '',
     String password = '',
     String confirmPassword = '',
+    String legalName = '',
   })  : _email = email,
         _email_addr = email_addr,
         _password = password,
-        _confirmPassword = confirmPassword;
+        _confirmPassword = confirmPassword,
+        _legal_name = legalName;
 
   final AuthCallback? onLogin;
   final AuthCallback? onSignup;
@@ -70,6 +72,13 @@ class Auth with ChangeNotifier {
   String get email_addr => _email_addr;
   set email_addr(String email_addr) {
     _email_addr = email_addr;
+    notifyListeners();
+  }
+
+  String _legal_name = '';
+  String get legal_name => _legal_name;
+  set legal_name(String legal_name) {
+    _legal_name = legal_name;
     notifyListeners();
   }
 
