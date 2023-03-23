@@ -40,6 +40,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   final _passwordFocusNode = FocusNode();
   final _confirmPasswordFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
+  final _legalNameFocusNode = FocusNode();
 
   TextEditingController? _nameController;
   TextEditingController? _passController;
@@ -184,10 +185,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       ));
     } else {
       error = await auth.onSignup!(LoginData(
-        name: auth.email,
-        password: auth.password,
-        email: auth.email_addr,
-      ));
+          name: auth.email,
+          password: auth.password,
+          email: auth.email_addr,
+          legalName: auth.legal_name));
     }
 
     // workaround to run after _cardSizeAnimation in parent finished
@@ -312,9 +313,11 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       inertiaDirection: TextFieldInertiaDirection.right,
       labelText: messages.confirmPasswordHint,
       controller: _confirmPassController,
-      textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.next,
       focusNode: _confirmPasswordFocusNode,
-      onFieldSubmitted: (value) => _submit(),
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_emailFocusNode);
+      },
       validator: auth.isSignup
           ? (value) {
               if (value != _passController!.text) {
@@ -337,9 +340,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       labelText: messages.emailHint,
       controller: _emailController,
       prefixIcon: Icon(Icons.email),
-      textInputAction: TextInputAction.done,
+      keyboardType: TextFieldUtils.getKeyboardType(LoginUserType.email),
+      textInputAction: TextInputAction.next,
       focusNode: _emailFocusNode,
-      onFieldSubmitted: (value) => _submit(),
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_legalNameFocusNode);
+      },
       validator: auth.isSignup
           ? (value) {
               if (value!.isEmpty || !Regex.email.hasMatch(value)) {
@@ -349,6 +355,31 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             }
           : (value) => null,
       onSaved: (value) => auth.email_addr = value!,
+    );
+  }
+
+  Widget _buildLegalNameField(
+    double width,
+    LoginMessages messages,
+    Auth auth,
+  ) {
+    return AnimatedTextFormField(
+      width: width,
+      loadingController: _loadingController,
+      interval: _nameTextFieldLoadingAnimationInterval,
+      labelText: messages.legalNameHint,
+      prefixIcon: Icon(FontAwesomeIcons.signature),
+      keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
+      textInputAction: TextInputAction.done,
+      focusNode: _legalNameFocusNode,
+      onFieldSubmitted: (value) => _submit(),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return messages.legalNameError;
+        }
+        return null;
+      },
+      onSaved: (value) => auth.legal_name = value!,
     );
   }
 
@@ -521,6 +552,22 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
             child: _buildEmailField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildLegalNameField(textFieldWidth, messages, auth),
           ),
           ExpandableContainer(
             backgroundColor: theme.accentColor,

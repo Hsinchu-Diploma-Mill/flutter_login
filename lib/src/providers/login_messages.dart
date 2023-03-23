@@ -7,6 +7,8 @@ class LoginMessages with ChangeNotifier {
       this.confirmPasswordHint = defaultConfirmPasswordHint,
       this.emailHint = defaultemailHint,
       this.emailError = defaultemailError,
+      this.legalNameHint = defaultLegalNameHint,
+      this.legalNameError = defaultLegalNameError,
       this.forgotPasswordButton = defaultForgotPasswordButton,
       this.loginButton = defaultLoginButton,
       this.signupButton = defaultSignupButton,
@@ -28,6 +30,8 @@ class LoginMessages with ChangeNotifier {
   static const defaultConfirmPasswordHint = 'Confirm Password';
   static const defaultemailHint = 'E-mail';
   static const defaultemailError = 'Invalid E-mail';
+  static const defaultLegalNameHint = 'Legal Name';
+  static const defaultLegalNameError = 'Invalid Legal Name';
   static const defaultForgotPasswordButton = 'Forgot Password?';
   static const defaultLoginButton = 'LOGIN';
   static const defaultSignupButton = 'SIGNUP';
@@ -60,6 +64,12 @@ class LoginMessages with ChangeNotifier {
 
   /// Error text for invalid email
   final String emailError;
+
+  /// Hint text of the legal name [TextField]
+  final String legalNameHint;
+
+  /// Error text for invalid legal name
+  final String legalNameError;
 
   /// Forgot password button's label
   final String forgotPasswordButton;

@@ -30,6 +30,7 @@ import 'fade_in.dart';
 part 'login_card.dart';
 part 'recover_card.dart';
 part 'register_notice_card.dart';
+part 'custom_card.dart';
 
 class AuthCard extends StatefulWidget {
   AuthCard(
@@ -47,7 +48,8 @@ class AuthCard extends StatefulWidget {
       this.hideProvidersTitle = false,
       this.disableCustomPageTransformer = false,
       this.loginTheme,
-      this.navigateBackAfterRecovery = false})
+      this.navigateBackAfterRecovery = false,
+      required this.phoneVerifWidget})
       : super(key: key);
 
   final EdgeInsets padding;
@@ -64,6 +66,8 @@ class AuthCard extends StatefulWidget {
   final bool disableCustomPageTransformer;
   final LoginTheme? loginTheme;
   final bool navigateBackAfterRecovery;
+  final Widget Function(Function(String message) onError,
+      Function(String phoneNumber) onSuccess) phoneVerifWidget;
 
   @override
   AuthCardState createState() => AuthCardState();
@@ -73,7 +77,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   final GlobalKey _cardKey = GlobalKey();
 
   var _isLoadingFirstTime = true;
-  var _pageIndex = 0;
+  var _pageIndex = 1;
   static const cardSizeScaleEnd = .2;
 
   var _isRecovery = false;
@@ -293,6 +297,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
+
     Widget current = Container(
       height: deviceSize.height,
       width: deviceSize.width,
@@ -309,7 +314,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             ? null
             : CustomPageTransformer(),
         itemBuilder: (BuildContext context, int index) {
-          final child = index == 0
+          final child = index == 1
               ? _buildLoadingAnimator(
                   theme: theme,
                   child: _LoginCard(
@@ -338,7 +343,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                     hideProvidersTitle: widget.hideProvidersTitle,
                   ),
                 )
-              : index == 1
+              : index == 2
                   ? _isRecovery
                       ? _RecoverCard(
                           loginTheme: widget.loginTheme,
