@@ -1,7 +1,7 @@
 import 'package:quiver/core.dart';
 
 class LoginData {
-  final String name;
+  final String name; // Phone number during login, Username during register
   final String password;
   final String? email;
   final String? legalName;

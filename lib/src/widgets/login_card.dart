@@ -46,6 +46,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   TextEditingController? _passController;
   TextEditingController? _confirmPassController;
   TextEditingController? _emailController;
+  TextEditingController? _legalNameController;
 
   var _isLoading = false;
   var _isSubmitting = false;
@@ -75,6 +76,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
     _confirmPassController = TextEditingController(text: auth.confirmPassword);
+    _emailController = TextEditingController(text: auth.email_addr);
+    _legalNameController = TextEditingController(text: auth.legal_name);
 
     _loadingController = widget.loadingController ??
         (AnimationController(
@@ -132,6 +135,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
     _emailFocusNode.dispose();
+    _legalNameFocusNode.dispose();
 
     _switchAuthController.dispose();
     _postSwitchAuthController.dispose();
@@ -155,8 +159,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     if (newAuthMode == AuthMode.Signup) {
       _switchAuthController.forward();
+      _nameController?.text = '';
     } else {
       _switchAuthController.reverse();
+      _nameController?.text = '+886';
     }
   }
 
@@ -169,6 +175,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     final messages = Provider.of<LoginMessages>(context, listen: false);
 
     if (!_formKey.currentState!.validate()) {
+      print('Validation failed');
       return false;
     }
 
@@ -265,15 +272,26 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       width: width,
       loadingController: _loadingController,
       interval: _nameTextFieldLoadingAnimationInterval,
-      labelText: messages.userHint,
-      autofillHints: [TextFieldUtils.getAutofillHints(widget.userType)],
-      prefixIcon: Icon(FontAwesomeIcons.solidUserCircle),
-      keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
+      labelText: auth.isLogin ? messages.phoneHint : messages.userHint,
+      autofillHints: [
+        auth.isLogin ? AutofillHints.telephoneNumber : AutofillHints.username
+      ],
+      prefixIcon: auth.isLogin
+          ? Icon(FontAwesomeIcons.phoneAlt)
+          : Icon(FontAwesomeIcons.solidUserCircle),
+      keyboardType: auth.isLogin ? TextInputType.phone : TextInputType.name,
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (value) {
         FocusScope.of(context).requestFocus(_passwordFocusNode);
       },
-      validator: widget.userValidator,
+      validator: auth.isSignup
+          ? widget.userValidator
+          : (value) {
+              if (value!.isEmpty || !Regex.phone.hasMatch(value)) {
+                return messages.phoneError;
+              }
+              return null;
+            },
       onSaved: (value) => auth.email = value!,
     );
   }
@@ -368,17 +386,20 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       loadingController: _loadingController,
       interval: _nameTextFieldLoadingAnimationInterval,
       labelText: messages.legalNameHint,
+      controller: _legalNameController,
       prefixIcon: Icon(FontAwesomeIcons.signature),
       keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
       textInputAction: TextInputAction.done,
       focusNode: _legalNameFocusNode,
       onFieldSubmitted: (value) => _submit(),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return messages.legalNameError;
-        }
-        return null;
-      },
+      validator: auth.isSignup
+          ? (value) {
+              if (value!.isEmpty) {
+                return messages.legalNameError;
+              }
+              return null;
+            }
+          : (value) => null,
       onSaved: (value) => auth.legal_name = value!,
     );
   }

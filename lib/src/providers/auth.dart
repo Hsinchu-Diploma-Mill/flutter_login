@@ -20,7 +20,7 @@ class Auth with ChangeNotifier {
     this.onLogin,
     this.onSignup,
     this.onRecoverPassword,
-    String email = '',
+    String email = '+886',
     String email_addr = '',
     String password = '',
     String confirmPassword = '',
@@ -55,8 +55,10 @@ class Auth with ChangeNotifier {
   AuthMode switchAuth() {
     if (mode == AuthMode.Login) {
       mode = AuthMode.Signup;
+      email = '';
     } else if (mode == AuthMode.Signup) {
       mode = AuthMode.Login;
+      email = '+886';
     }
     return mode;
   }

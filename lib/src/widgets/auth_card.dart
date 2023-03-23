@@ -48,8 +48,7 @@ class AuthCard extends StatefulWidget {
       this.hideProvidersTitle = false,
       this.disableCustomPageTransformer = false,
       this.loginTheme,
-      this.navigateBackAfterRecovery = false,
-      required this.phoneVerifWidget})
+      this.navigateBackAfterRecovery = false})
       : super(key: key);
 
   final EdgeInsets padding;
@@ -66,8 +65,6 @@ class AuthCard extends StatefulWidget {
   final bool disableCustomPageTransformer;
   final LoginTheme? loginTheme;
   final bool navigateBackAfterRecovery;
-  final Widget Function(Function(String message) onError,
-      Function(String phoneNumber) onSuccess) phoneVerifWidget;
 
   @override
   AuthCardState createState() => AuthCardState();
@@ -77,7 +74,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   final GlobalKey _cardKey = GlobalKey();
 
   var _isLoadingFirstTime = true;
-  var _pageIndex = 1;
+  var _pageIndex = 0;
   static const cardSizeScaleEnd = .2;
 
   var _isRecovery = false;
@@ -305,7 +302,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       child: TransformerPageView(
         physics: NeverScrollableScrollPhysics(),
         pageController: _pageController,
-        itemCount: 2,
+        itemCount: 3,
 
         /// Need to keep track of page index because soft keyboard will
         /// make page view rebuilt
@@ -314,7 +311,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             ? null
             : CustomPageTransformer(),
         itemBuilder: (BuildContext context, int index) {
-          final child = index == 1
+          final child = index == 0
               ? _buildLoadingAnimator(
                   theme: theme,
                   child: _LoginCard(
@@ -343,7 +340,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                     hideProvidersTitle: widget.hideProvidersTitle,
                   ),
                 )
-              : index == 2
+              : index == 1
                   ? _isRecovery
                       ? _RecoverCard(
                           loginTheme: widget.loginTheme,
