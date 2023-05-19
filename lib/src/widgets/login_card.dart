@@ -543,7 +543,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
           ),
           ExpandableContainer(
-            backgroundColor: theme.accentColor,
+            backgroundColor: theme.colorScheme.secondary,
             controller: _switchAuthController,
             initialState: isLogin
                 ? ExpandableContainerState.shrunk
@@ -559,7 +559,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
           ),
           ExpandableContainer(
-            backgroundColor: theme.accentColor,
+            backgroundColor: theme.colorScheme.secondary,
             controller: _switchAuthController,
             initialState: isLogin
                 ? ExpandableContainerState.shrunk
@@ -575,7 +575,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: _buildEmailField(textFieldWidth, messages, auth),
           ),
           ExpandableContainer(
-            backgroundColor: theme.accentColor,
+            backgroundColor: theme.colorScheme.secondary,
             controller: _switchAuthController,
             initialState: isLogin
                 ? ExpandableContainerState.shrunk
@@ -591,7 +591,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: _buildLegalNameField(textFieldWidth, messages, auth),
           ),
           ExpandableContainer(
-            backgroundColor: theme.accentColor,
+            backgroundColor: theme.colorScheme.secondary,
             controller: _switchAuthController,
             initialState: isLogin
                 ? ExpandableContainerState.shrunk
