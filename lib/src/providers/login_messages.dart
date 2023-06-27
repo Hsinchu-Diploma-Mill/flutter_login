@@ -25,7 +25,8 @@ class LoginMessages with ChangeNotifier {
       this.signUpSuccess = defaultSignUpSuccess,
       this.signUpMessage = defaultSignUpMessage,
       this.providersTitle = defaultProvidersTitle,
-      this.acceptButtonText = defaultAcceptButtonText});
+      this.acceptButtonText = defaultAcceptButtonText,
+      this.declineButtonText = defaultDeclineButtonText});
 
   static const defaultUserHint = 'Email';
   static const defaultPasswordHint = 'Password';
@@ -52,6 +53,7 @@ class LoginMessages with ChangeNotifier {
   static const defaultSignUpMessage = '';
   static const defaultProvidersTitle = 'or login with';
   static const defaultAcceptButtonText = 'Accept';
+  static const defaultDeclineButtonText = 'Decline';
 
   /// Hint text of the userHint [TextField]
   /// By default is Email
@@ -127,4 +129,7 @@ class LoginMessages with ChangeNotifier {
 
   /// The string shown on the button Accept of the register notice card
   final String acceptButtonText;
+
+  /// The string shown on the button Decline of the register notice card
+  final String declineButtonText;
 }
