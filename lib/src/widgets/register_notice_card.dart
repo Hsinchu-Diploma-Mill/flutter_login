@@ -8,6 +8,7 @@ class _RegisterNoticeCard extends StatefulWidget {
       required this.title,
       required this.message,
       this.imageAsset,
+      this.mono,
       this.bodyTextAlign})
       : super(key: key);
 
@@ -19,6 +20,8 @@ class _RegisterNoticeCard extends StatefulWidget {
   final String? imageAsset;
 
   final TextAlign? bodyTextAlign;
+
+  final bool? mono;
 
   @override
   _RegisterNoticeCardState createState() => _RegisterNoticeCardState();
@@ -136,7 +139,10 @@ class _RegisterNoticeCardState extends State<_RegisterNoticeCard>
                       widget.message,
                       key: kRecoverPasswordDescriptionKey,
                       textAlign: widget.bodyTextAlign ?? TextAlign.center,
-                      style: theme.textTheme.bodyText1,
+                      style: widget.mono == true
+                          ? TextStyle(
+                              fontFeatures: [FontFeature.tabularFigures()])
+                          : theme.textTheme.bodyLarge,
                     ),
                   ),
                 ),
