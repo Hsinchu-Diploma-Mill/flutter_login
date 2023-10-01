@@ -45,6 +45,7 @@ class AnimatedTextFormField extends StatefulWidget {
     this.onSaved,
     this.autocorrect = false,
     this.autofillHints,
+    this.autovalidateMode,
   })  : assert((inertiaController == null && inertiaDirection == null) ||
             (inertiaController != null && inertiaDirection != null)),
         super(key: key);
@@ -68,6 +69,7 @@ class AnimatedTextFormField extends StatefulWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final FormFieldSetter<String>? onSaved;
   final TextFieldInertiaDirection? inertiaDirection;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   _AnimatedTextFormFieldState createState() => _AnimatedTextFormFieldState();
@@ -221,6 +223,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
       enabled: widget.enabled,
       autocorrect: widget.autocorrect,
       autofillHints: widget.autofillHints,
+      autovalidateMode: widget.autovalidateMode,
     );
 
     if (widget.loadingController != null) {
@@ -270,6 +273,7 @@ class AnimatedPasswordTextFormField extends StatefulWidget {
     this.onFieldSubmitted,
     this.onSaved,
     this.autofillHints,
+    this.autoValidateMode,
   })  : assert((inertiaController == null && inertiaDirection == null) ||
             (inertiaController != null && inertiaDirection != null)),
         super(key: key);
@@ -289,6 +293,7 @@ class AnimatedPasswordTextFormField extends StatefulWidget {
   final FormFieldSetter<String>? onSaved;
   final TextFieldInertiaDirection? inertiaDirection;
   final Iterable<String>? autofillHints;
+  final AutovalidateMode? autoValidateMode;
 
   @override
   _AnimatedPasswordTextFormFieldState createState() =>
@@ -308,6 +313,7 @@ class _AnimatedPasswordTextFormFieldState
       width: widget.animatedWidth,
       enabled: widget.enabled,
       autofillHints: widget.autofillHints,
+      autovalidateMode: widget.autoValidateMode,
       labelText: widget.labelText,
       prefixIcon: Icon(FontAwesomeIcons.lock, size: 20),
       suffixIcon: GestureDetector(

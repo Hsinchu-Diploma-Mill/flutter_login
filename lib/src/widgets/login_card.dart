@@ -276,6 +276,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       autofillHints: [
         auth.isLogin ? AutofillHints.telephoneNumber : AutofillHints.username
       ],
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       prefixIcon: auth.isLogin
           ? Icon(FontAwesomeIcons.phoneAlt)
           : Icon(FontAwesomeIcons.solidUserCircle),
@@ -304,6 +305,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       labelText: messages.passwordHint,
       autofillHints:
           auth.isLogin ? [AutofillHints.password] : [AutofillHints.newPassword],
+      autoValidateMode: auth.isLogin
+          ? AutovalidateMode.disabled
+          : AutovalidateMode.onUserInteraction,
       controller: _passController,
       textInputAction:
           auth.isLogin ? TextInputAction.done : TextInputAction.next,
@@ -329,6 +333,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       loadingController: _loadingController,
       inertiaController: _postSwitchAuthController,
       inertiaDirection: TextFieldInertiaDirection.right,
+      autoValidateMode: AutovalidateMode.onUserInteraction,
       labelText: messages.confirmPasswordHint,
       controller: _confirmPassController,
       textInputAction: TextInputAction.next,
